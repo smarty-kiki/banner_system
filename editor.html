@@ -26,6 +26,20 @@
     $(function () {
 
         var ws = new WebSocket('ws://center.yao-yang.cn:49999/');
+
+        ws.onmessage = function (event) {
+            if (typeof event.data === 'string') {
+                var res = JSON.parse(event.data);
+                editor.html(res.content);
+            }
+        };
+
+        ws.onopen = function () {
+            ws.send(JSON.stringify({
+                    editor: true
+            }));
+        };
+
         setInterval(function () {
             html = editor.html('editor_id');
             ws.send(JSON.stringify({

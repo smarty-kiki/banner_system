@@ -2,7 +2,6 @@
 
   var banner_html = '';
   var banner = null;
-  var editor = null;
 
   var port = 49999;
   var webSocketServer = require('websocket').server;
@@ -46,6 +45,11 @@
 
       if (json.banner) {
         banner = conn;
+        json.content = banner_html;
+      }
+
+      if (json.editor) {
+        conn.sendUTF(JSON.stringify({content:banner_html}));
       }
 
       sendJsonToBanner(json);
