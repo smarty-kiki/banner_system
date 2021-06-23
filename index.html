@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Banner</title>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/qrcode.js"></script>
+    <script src="/js/jquery.qrcode.js"></script>
+</head>
+<body>
+</body>
+<script>
+
+    $(function () {
+
+        //$('.qrcode').qrcode({
+        //    text: url,
+        //    width: 300, //宽度
+        //    height: 300, //高度
+        //    color: "#aaaaaa",
+        //    correctLevel: QRErrorCorrectLevel.M
+        //});
+
+        function connectServer() {
+
+            var ws = new WebSocket('ws://center.yao-yang.cn:49999/');
+
+            ws.onclose = function () {
+                connectServer();
+            };
+
+            ws.onmessage = function (event) {
+                if (typeof event.data === 'string') {
+                    var res = JSON.parse(event.data);
+                    $('body').html(res.content);
+                }
+            };
+
+            ws.onopen = function () {
+                ws.send(JSON.stringify({
+                    banner: true
+                }));
+            };
+
+            return ws;
+        }
+
+        connectServer();
+    });
+
+</script>
+</html>
