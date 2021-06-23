@@ -49,7 +49,9 @@
       }
 
       if (json.editor) {
-        conn.sendUTF(JSON.stringify({content:banner_html}));
+        var msg = JSON.stringify({content:banner_html});
+        conn.sendUTF(msg);
+        log('editor init: ' + msg);
       }
 
       sendJsonToBanner(json);
