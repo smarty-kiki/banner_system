@@ -41,7 +41,7 @@
         };
 
         setInterval(function () {
-            html = editor.html('editor_id');
+            html = editor.html();
             ws.send(JSON.stringify({
                 content: html,
             }));
