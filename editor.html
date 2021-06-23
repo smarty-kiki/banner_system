@@ -28,10 +28,9 @@
         var ws = new WebSocket('ws://center.yao-yang.cn:49999/');
 
         ws.onmessage = function (event) {
-            if (typeof event.data === 'string') {
-                var res = JSON.parse(event.data);
-                editor.html(res.content);
-            }
+            var res = JSON.parse(event.data);
+            console.log(res.content);
+            editor.html(res.content);
         };
 
         ws.onopen = function () {
