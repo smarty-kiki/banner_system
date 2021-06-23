@@ -27,7 +27,7 @@
     var sendJsonToBanner = function (json) {
       var msg = JSON.stringify(json);
       if (banner) {
-        banner_html = msg.content;
+        banner_html = json.content;
         banner.sendUTF(msg);
         log('banner sync: ' + msg);
       }
@@ -50,8 +50,8 @@
       }
 
       if (json.editor) {
-        var msg = JSON.stringify({content:banner_html});
         json.content = banner_html;
+        var msg = JSON.stringify({content:banner_html});
         conn.sendUTF(msg);
         log('editor init: ' + msg);
       }
