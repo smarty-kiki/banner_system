@@ -35,7 +35,7 @@
                         res.content = '<div class="qrcode"></div>';
                         $('body').html(res.content);
                         $('.qrcode').qrcode({
-                            text: '/editor.html',
+                            text: window.location.href + 'editor.html',
                             width: 190, //宽度
                             height: 190, //高度
                             color: "#aaaaaa",
