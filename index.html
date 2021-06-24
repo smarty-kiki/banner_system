@@ -9,24 +9,16 @@
     <style>
         body {
             margin: 0px;
-            margin-top: 6px;
+            margin-top: 7px;
             padding: 0px;
         }
     </style>
 </head>
-<body>
+<body onload="setTimeout('this.location.reload();',600000)">
 </body>
 <script>
 
     $(function () {
-
-        //$('.qrcode').qrcode({
-        //    text: url,
-        //    width: 300, //宽度
-        //    height: 300, //高度
-        //    color: "#aaaaaa",
-        //    correctLevel: QRErrorCorrectLevel.M
-        //});
 
         function connectServer() {
 
@@ -39,7 +31,19 @@
             ws.onmessage = function (event) {
                 if (typeof event.data === 'string') {
                     var res = JSON.parse(event.data);
-                    $('body').html(res.content);
+                    if (! res.content) {
+                        res.content = '<div class="qrcode"></div>';
+                        $('body').html(res.content);
+                        $('.qrcode').qrcode({
+                            text: '/editor.html',
+                            width: 200, //宽度
+                            height: 200, //高度
+                            color: "#aaaaaa",
+                            correctLevel: QRErrorCorrectLevel.M
+                        });
+                    } else {
+                        $('body').html(res.content);
+                    }
                 }
             };
 
