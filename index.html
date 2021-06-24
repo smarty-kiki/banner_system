@@ -31,7 +31,7 @@
             ws.onmessage = function (event) {
                 if (typeof event.data === 'string') {
                     var res = JSON.parse(event.data);
-                    if (! res.content) {
+                    if (res.content === '<br />') {
                         res.content = '<div class="qrcode"></div>';
                         $('body').html(res.content);
                         $('.qrcode').qrcode({
