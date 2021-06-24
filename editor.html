@@ -44,7 +44,7 @@
         };
 
         setInterval(function () {
-            if (html !== editor.html()) {
+            if (finish_init && html !== editor.html()) {
                 html = editor.html();
                 ws.send(JSON.stringify({
                     content: html,
