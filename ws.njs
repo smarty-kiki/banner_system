@@ -1,6 +1,20 @@
 (function () {
 
+  var fs = require('fs')
+  var db_file = '/root/banner.db';
+
   var banner_html = '';
+
+  fs.readFile(db_file, function (error, data) {
+    if (error) {
+      console.log('读取' + db_file + '文件失败了');
+    } else {
+
+      banner_html = data.toString();
+      console.log(data.toString())
+    }
+  });
+
   var banner = null;
 
   var port = 49999;
@@ -26,8 +40,17 @@
 
     var sendJsonToBanner = function (json) {
       var msg = JSON.stringify(json);
+      banner_html = json.content;
+
+      fs.writeFile(db_file, banner_html, function (error) {
+        if (error) {
+          console.log('写入'+db_file+'失败');
+        } else {
+          console.log('写入'+db_file+'成功了');
+        }
+      });
+
       if (banner) {
-        banner_html = json.content;
         banner.sendUTF(msg);
         log('banner sync: ' + msg);
       }
