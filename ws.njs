@@ -42,7 +42,7 @@
     if (url == '/read') {
       response.write(banner_html);
       response.end();
-    } elseif (url == '/write') {
+    } else if (url == '/write') {
       var data = [];
       request.on('data', chunk => {
         data.push(chunk);
