@@ -36,9 +36,24 @@
   });
 
   httpServer2.on('request', function (request, response) {
-    console.log('收到客户端的请求了，请求路径是：' + request.url);
-    response.write(banner_html);
-    response.end();
+    var url = request.url;
+    console.log('收到客户端的请求了，请求路径是：' + url);
+
+    if (url == '/read') {
+      response.write(banner_html);
+      response.end();
+    } elseif (url == '/write') {
+      var data = [];
+      request.on('data', chunk => {
+        data.push(chunk);
+      });
+      request.on('end', () => {
+        banner_html = data;
+        response.write(banner_html);
+        response.end();
+      });
+    }
+
   });
 
   var wsServer = new webSocketServer({
