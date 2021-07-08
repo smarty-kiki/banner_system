@@ -52,8 +52,10 @@
         response.write(banner_html);
         response.end();
       });
-    }
+    } else {
 
+      response.end();
+    }
   });
 
   var wsServer = new webSocketServer({
