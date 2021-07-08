@@ -17,7 +17,7 @@
 
   var banner = null;
 
-  var port = 49999;
+  var ws_port = 49999;
   var webSocketServer = require('websocket').server;
   var http = require('http'); 
   var log = function (str) {
@@ -25,8 +25,21 @@
   };
 
   var httpServer = http.createServer(function () {});
-  httpServer.listen(port, function () {
-    log("Listening on port " + port);
+  httpServer.listen(ws_port, function () {
+    log("Listening on ws_port " + ws_port);
+  });
+
+  server.on('request', function (request, response) {
+    // http://127.0.0.1:3000/ /
+    // http://127.0.0.1:3000/a /a
+    // http://127.0.0.1:3000/foo/b /foo/b
+    console.log('收到客户端的请求了，请求路径是：' + request.url)
+    // response 对象有一个方法：write 可以用来给客户端发送响应数据
+    // write 可以使用多次，但是最后一定要使用 end 来结束响应，否则客户端会一直等待
+    response.write('hello')
+    response.write(' nodejs')
+    // 告诉客户端，我的话说完了，你可以呈递给用户了
+    response.end()
   });
 
   var wsServer = new webSocketServer({
