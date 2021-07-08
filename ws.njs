@@ -48,7 +48,14 @@
         data.push(chunk);
       });
       request.on('end', () => {
-        banner_html = data;
+        banner_html = data.toString();
+        fs.writeFile(db_file, banner_html, function (error) {
+          if (error) {
+            console.log('写入'+db_file+'失败');
+          } else {
+            console.log('写入'+db_file+'成功了');
+          }
+        });
         response.write(banner_html);
         response.end();
       });
