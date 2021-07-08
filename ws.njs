@@ -18,6 +18,7 @@
   var banner = null;
 
   var ws_port = 49999;
+  var http_port = 49998;
   var webSocketServer = require('websocket').server;
   var http = require('http'); 
   var log = function (str) {
@@ -29,7 +30,12 @@
     log("Listening on ws_port " + ws_port);
   });
 
-  httpServer.on('request', function (request, response) {
+  var httpServer2 = http.createServer(function () {});
+  httpServer2.listen(http_port, function () {
+    log("Listening on http_port " + http_port);
+  });
+
+  httpServer2.on('request', function (request, response) {
     // http://127.0.0.1:3000/ /
     // http://127.0.0.1:3000/a /a
     // http://127.0.0.1:3000/foo/b /foo/b
