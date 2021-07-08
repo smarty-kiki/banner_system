@@ -29,7 +29,7 @@
     log("Listening on ws_port " + ws_port);
   });
 
-  server.on('request', function (request, response) {
+  httpServer.on('request', function (request, response) {
     // http://127.0.0.1:3000/ /
     // http://127.0.0.1:3000/a /a
     // http://127.0.0.1:3000/foo/b /foo/b
