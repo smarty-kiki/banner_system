@@ -28,13 +28,13 @@
         var ws = new WebSocket('ws://center.yao-yang.cn:49999/');
         var finish_init = false;
         var html = '';
+        var closed = false;
 
         ws.onmessage = function (event) {
             var res = JSON.parse(event.data);
-            console.log(res.content);
             editor.html(res.content);
-            finish_init = true;
             html = res.content;
+            finish_init = true;
         };
 
         ws.onopen = function () {
@@ -43,12 +43,31 @@
             }));
         };
 
+        ws.onclose = function () {
+            closed = true;
+            if (! finish_init) {
+                $.get("/read", function(result){
+                    editor.html(result);
+                    html = result;
+                    finish_init = true;
+                });
+            }
+        };
+
         setInterval(function () {
             if (finish_init && html !== editor.html()) {
                 html = editor.html();
-                ws.send(JSON.stringify({
-                    content: html,
-                }));
+                if (closed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/write',
+                        data: html
+                    });
+                } else {
+                    ws.send(JSON.stringify({
+                        content: html,
+                    }));
+                }
             }
         }, 1000);
     });
