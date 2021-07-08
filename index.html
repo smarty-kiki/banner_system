@@ -20,12 +20,23 @@
 
     $(function () {
 
+        var retry = 0;
+
         function connectServer() {
 
             var ws = new WebSocket('ws://center.yao-yang.cn:49999/');
 
             ws.onclose = function () {
-                connectServer();
+                retry ++;
+                if (retry < 10) {
+                    connectServer();
+                } else {
+                    setInterval(function () {
+                        $.get("/read", function(result){
+                            $('body').html(result);
+                        });
+                    }, 5000);
+                }
             };
 
             ws.onmessage = function (event) {
