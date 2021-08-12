@@ -31,6 +31,10 @@
                 if (retry < 10) {
                     connectServer();
                 } else {
+                    $.get("/read", function(result){
+                        $('body').html(result);
+                    });
+
                     setInterval(function () {
                         $.get("/read", function(result){
                             $('body').html(result);
