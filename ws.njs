@@ -17,8 +17,8 @@
 
   var banner = null;
 
-  var ws_port = 49999;
-  var http_port = 49998;
+  var ws_port = 49998;
+  var http_port = 49997;
   var webSocketServer = require('websocket').server;
   var http = require('http'); 
   var log = function (str) {
