@@ -12,6 +12,37 @@
             margin-top: 7px;
             padding: 0px;
         }
+        @keyframes blink{
+            0%{opacity: 1;}
+            100%{opacity: 0;}
+        }
+        /* 添加兼容性前缀 */
+        @-webkit-keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        @-moz-keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        @-ms-keyframes blink {
+            0% {opacity: 1; }
+            100% { opacity: 0;}
+        }
+        @-o-keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        /* 定义blink类*/
+        .blink{
+            color: #dd4814;
+            animation: blink 1s linear infinite;
+            /* 其它浏览器兼容性前缀 */
+            -webkit-animation: blink 1s linear infinite;
+            -moz-animation: blink 1s linear infinite;
+            -ms-animation: blink 1s linear infinite;
+            -o-animation: blink 1s linear infinite;
+        }
     </style>
 </head>
 <body onload="setTimeout('this.location.reload();',600000)">
@@ -21,6 +52,21 @@
     $(function () {
 
         var retry = 0;
+        var time_reg = new RegExp('([0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30))))', 'g');
+        var $body = $('body');
+
+        function setBody(result) {
+            var now = new Date();
+
+            $body.html($body.html().replaceAll(time_reg, function (c) {
+                var time_date = new Date(c);
+                if (time_date < now) {
+                    return '<mark class="blink">'+c+'</mark>';
+                } else {
+                    return c;
+                }
+            }));
+        }
 
         function connectServer() {
 
@@ -32,12 +78,12 @@
                     connectServer();
                 } else {
                     $.get("/read", function(result){
-                        $('body').html(result);
+                        setBody(result);
                     });
 
                     setInterval(function () {
                         $.get("/read", function(result){
-                            $('body').html(result);
+                            setBody(result);
                         });
                     }, 5000);
                 }
@@ -48,7 +94,7 @@
                     var res = JSON.parse(event.data);
                     if (res.content === '<br />') {
                         res.content = '<div class="qrcode"></div>';
-                        $('body').html(res.content);
+                        setBody(res.content);
                         $('.qrcode').qrcode({
                             text: window.location.href + 'editor.html',
                             width: 190, //宽度
@@ -57,7 +103,7 @@
                             correctLevel: QRErrorCorrectLevel.M
                         });
                     } else {
-                        $('body').html(res.content);
+                        setBody(res.content);
                     }
                 }
             };
