@@ -58,7 +58,7 @@
         function setBody(result) {
             var now = new Date();
 
-            $body.html(result.replaceAll(time_reg, function (c) {
+            $body.html(result.replace(time_reg, function (c) {
                 var time_date = new Date(c);
                 if (time_date < now) {
                     return '<mark class="blink">'+c+'</mark>';
@@ -121,4 +121,6 @@
     });
 
 </script>
+<!--script src="//cdn.jsdelivr.net/npm/eruda"></script>
+<script>eruda.init();</script-->
 </html>
