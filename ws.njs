@@ -104,6 +104,9 @@
       var json = receive(m);
 
       if (json.banner) {
+        if (banner) {
+          banner.close();
+        }
         banner = conn;
         json.content = banner_html;
       }
